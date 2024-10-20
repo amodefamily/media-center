@@ -1,0 +1,23 @@
+services:
+  traefik:
+    image: docker.io/library/traefik:v3.1.6
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      - 443:443
+    volumes:
+      - /run/docker.sock:/run/docker.sock:ro
+      - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ../../../bin/traefik/volumes/certs/:/var/traefik/certs/:rw
+      - ../../../bin/traefik/log/:/var/log/traefik/:rw
+    environment:
+       CF_DNS_API_TOKEN: /run/secrets/traefik_cloudflare_dns_api_token_value
+    secrets:
+      - traefik_cloudflare_dns_api_token_value
+
+secrets:
+  traefik_cloudflare_dns_api_token_value:
+    file: ../../secrets/.traefik_cloudflare_dns_api_token_value.txt
+
+
+
