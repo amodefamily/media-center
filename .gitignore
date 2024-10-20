@@ -1,0 +1,3 @@
+bin/
+src/.secrets/
+!src/.secrets/README.md

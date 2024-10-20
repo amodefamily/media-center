@@ -1,0 +1,20 @@
+http:
+  routers:
+    proxmox-router:
+      rule: Host(`{{ env "PROXMOX_EXTERNAL_DOMAIN" }}`)
+      entryPoints:
+        - websecure
+      service: proxmox-service
+      tls:
+        certResolver: {{ env "CERTIFICATE_RESOLVER_NAME" }}
+  services:
+    proxmox-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: {{ env "PROXMOX_INTERNAL_URL" }}
+        serversTransport: "pve"
+
+  serversTransports:
+    pve:
+      insecureSkipVerify: true

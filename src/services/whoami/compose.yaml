@@ -1,0 +1,14 @@
+services:
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    user: ${COMPOSE_USER_ID}:${COMPOSE_GROUP_ID}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.amodefamily.fr`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.tls.certresolver=cloudflare-staging"
+    environment:
+      - COMPOSE_USER_ID
+      - COMPOSE_GROUP_ID
