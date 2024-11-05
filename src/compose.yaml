@@ -17,15 +17,17 @@ name: docker-media-center
 # Networks
 #===============================================================================
 networks:
-  default:
-    driver: bridge
-
+  media_center_network:
+    external: true
+    name: ${MEDIA_CENTER_NETWORK}
 #===============================================================================
 # Included services
 #===============================================================================
 include:
+  - path:
   # CORE
-  - ./services/traefik/compose.yaml
-  - ./services/whoami/compose.yaml
+    - ./services/traefik/compose.yaml
+    - ./services/whoami/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}
   # MEDIA
   # UTILITIES

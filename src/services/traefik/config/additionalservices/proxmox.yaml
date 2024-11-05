@@ -1,7 +1,7 @@
 http:
   routers:
     proxmox-router:
-      rule: Host(`{{ env "PROXMOX_EXTERNAL_DOMAIN" }}`)
+      rule: Host(`{{ env "PROXMOX_EXTERNAL_ADDR" }}`)
       entryPoints:
         - websecure
       service: proxmox-service
@@ -12,7 +12,7 @@ http:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: {{ env "PROXMOX_INTERNAL_URL" }}
+          - url: {{ env "PROXMOX_INTERNAL_ADDR" }}
         serversTransport: "pve"
 
   serversTransports:

@@ -5,10 +5,9 @@ services:
     user: ${COMPOSE_USER_ID}:${COMPOSE_GROUP_ID}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.amodefamily.fr`)"
+      - "traefik.http.routers.whoami.rule=Host(`${WHOAMI_EXTERNAL_ADDR}`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls=true"
-      - "traefik.http.routers.whoami.tls.certresolver=cloudflare-staging"
-    environment:
-      - COMPOSE_USER_ID
-      - COMPOSE_GROUP_ID
+      - "traefik.http.routers.whoami.tls.certresolver=${CERTIFICATE_RESOLVER_NAME}"
+    networks:
+      - media_center_network

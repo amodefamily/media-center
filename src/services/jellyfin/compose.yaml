@@ -1,0 +1,36 @@
+services:
+  ###########################################################################
+  ###########################################################################
+  ##
+  ##  Docker Compose File: Jellyfin (LinuxServer.io)
+  ##  Function: Media Server
+  ##
+  ##  Documentation: https://jellyfin.org/docs/general/administration/installing#docker
+  ##  https://jellyfin.org/docs/general/administration/hardware-acceleration/
+  ##
+  ###########################################################################
+  ###########################################################################
+  jellyfin:
+    image: linuxserver/jellyfin:latest
+    container_name: jellyfin
+    restart: "unless-stopped"
+    #user: "3001:3001"
+    security_opt:
+      - no-new-privileges:true
+    devices:
+      - /dev/dri:/dev/dri # for harware transcoding
+    volumes:
+      - ../../../appdata/jellyfin/config:/config
+      - /mnt:/data/media
+      - /dev/shm:/data/transcode # Offload transcoding to RAM if you have enough RAM
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=022
+      - TZ="Indian\Reunion"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.amodefamily.fr`)"
+      - "traefik.http.routers.jellyfin.entrypoints=websecure"
+      - "traefik.http.routers.jellyfin.tls=true"
+      - "traefik.http.routers.jellyfin.tls.certresolver=cloudflare"

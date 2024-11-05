@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: docker.io/library/traefik:v3.1.6
+    image: docker.io/library/traefik:v3.2
     container_name: traefik
     restart: unless-stopped
     ports:
@@ -10,18 +10,19 @@ services:
       - /run/docker.sock:/run/docker.sock:ro
       - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
       - ./config/additionalservices/:/etc/traefik/additionalservices:ro
-      - ../../../bin/traefik/volumes/certs/:/var/traefik/certs/:rw
-      - ../../../bin/traefik/log/:/var/log/traefik/:rw
+      - $APP_DATA_DIRECTORY/traefik/volumes/certs/:/var/traefik/certs/:rw
+      - $APP_DATA_DIRECTORY/traefik/log/:/var/log/traefik/:rw
     environment:
       - CF_DNS_API_TOKEN_FILE=/run/secrets/cloudflare_token
-      - CF_API_EMAIL
-      - CERTIFICATE_RESOLVER_NAME
-      - PROXMOX_INTERNAL_URL
-      - PROXMOX_EXTERNAL_DOMAIN
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CERTIFICATE_RESOLVER_NAME=${CERTIFICATE_RESOLVER_NAME}
+      - PROXMOX_INTERNAL_ADDR=${PROXMOX_INTERNAL_ADDR}
+      - PROXMOX_EXTERNAL_ADDR=${PROXMOX_EXTERNAL_ADDR}
     secrets:
       - cloudflare_token
+    networks:
+      - media_center_network
 
 secrets:
   cloudflare_token:
     file: ../../.secrets/CF_DNS_API_TOKEN
-

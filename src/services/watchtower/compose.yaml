@@ -1,0 +1,22 @@
+services:
+  # Watchtower is a process for automating Docker container base image updates
+  # https://containrrr.dev/watchtower/
+  # Root Image: ???
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    networks:
+      - socket_proxy
+    environment:
+      - TZ=${TIMEZONE}
+      - WATCHTOWER_LOG_FORMAT=json
+      - WATCHTOWER_LOG_LEVEL=info
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_INCLUDE_STOPPED=true
+      - WATCHTOWER_REVIVE_STOPPED=false
+      - DOCKER_HOST=tcp://socket-proxy:2375
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
