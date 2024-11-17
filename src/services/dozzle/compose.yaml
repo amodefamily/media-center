@@ -1,0 +1,30 @@
+services:
+  ###########################################################################
+  ###########################################################################
+  ##
+  ##  Docker Compose File: Dozzle (amir20)
+  ##  Function: Log Viewer for Docker Containers
+  ##
+  ##  Documentation: https://dozzle.dev/guide/what-is-dozzle
+  ##
+  ###########################################################################
+  ###########################################################################
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: unless-stopped
+    networks:
+      - socket_proxy # connect to access docker sock
+      - media_center_network # see container logs from containers on this network
+    environment:
+      - DOZZLE_LEVEL=info
+      - DOZZLE_FILTER="status=running"
+      - DOZZLE_NO_ANALYTICS=true
+      - DOCKER_HOST=tcp://socket-proxy:2375
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzle.rule=Host(`${DOZZLE_EXTERNAL_ADDR}`)"
+      - "traefik.http.routers.dozzle.entrypoints=websecure"
+      - "traefik.http.routers.dozzle.tls=true"
+      - "traefik.http.routers.dozzle.tls.certresolver=${CERTIFICATE_RESOLVER_NAME}"

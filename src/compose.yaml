@@ -20,6 +20,13 @@ networks:
   media_center_network:
     external: true
     name: ${MEDIA_CENTER_NETWORK}
+  socket_proxy:
+    name: socket_proxy
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 192.168.91.0/24
 #===============================================================================
 # Included services
 #===============================================================================
@@ -28,6 +35,9 @@ include:
   # CORE
     - ./services/traefik/compose.yaml
     - ./services/whoami/compose.yaml
+    - ./services/dozzle/compose.yaml
+    - ./services/socket-proxy/compose.yaml
+    - ./services/watchtower/compose.yaml
     env_file: ${GLOBAL_ENV_FILE_PATH}
   # MEDIA
   # UTILITIES

@@ -51,6 +51,7 @@ certificatesResolvers:
 providers:
   docker:
     exposedByDefault: false
+    endpoint: "tcp://socket-proxy:2375"
   file:
     directory: /etc/traefik
     watch: true

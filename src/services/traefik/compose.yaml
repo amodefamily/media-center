@@ -7,7 +7,6 @@ services:
       - 443:443
       - 8080:8080
     volumes:
-      - /run/docker.sock:/run/docker.sock:ro
       - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
       - ./config/additionalservices/:/etc/traefik/additionalservices:ro
       - $APP_DATA_DIRECTORY/traefik/volumes/certs/:/var/traefik/certs/:rw
@@ -22,6 +21,7 @@ services:
       - cloudflare_token
     networks:
       - media_center_network
+      - socket_proxy
 
 secrets:
   cloudflare_token:
