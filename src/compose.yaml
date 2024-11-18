@@ -32,12 +32,20 @@ networks:
 #===============================================================================
 include:
   - path:
-  # CORE
     - ./services/traefik/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}
+  - path:
     - ./services/whoami/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}
+  - path:
     - ./services/dozzle/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}
+  - path:
     - ./services/socket-proxy/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}
+  - path:
     - ./services/watchtower/compose.yaml
     env_file: ${GLOBAL_ENV_FILE_PATH}
-  # MEDIA
-  # UTILITIES
+  - path:
+    - ./services/teleport/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}

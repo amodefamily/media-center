@@ -2,20 +2,13 @@ global:
   checkNewVersion: false
   sendAnonymousUsage: false
 
-log:
-  level: ERROR
-  format: common
-  filePath: /var/log/traefik/traefik.log
-
 accesslog:
-  format: json
-  filePath: /var/log/traefik/access.log
+  addInternals: true
 
 api:
   dashboard: true
   disableDashboardAd: true
   insecure: true
-
 
 entryPoints:
   web:
@@ -47,6 +40,11 @@ certificatesResolvers:
         resolvers:
           - "1.1.1.1:53"
           - "8.8.8.8:53"
+
+http:
+  serversTransports:
+    insecureSkipVerifyEnabledServersTransport:
+      insecureSkipVerify: true
 
 providers:
   docker:
