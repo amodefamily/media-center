@@ -1,6 +1,6 @@
 version: v3
 teleport:
-  nodename: node1-${TELEPORT_EXTERNAL_ADDR}
+  nodename: TOREPLACE
   data_dir: /var/lib/teleport
   log:
     output: stderr
@@ -11,12 +11,21 @@ auth_service:
   enabled: yes
   listen_addr: 0.0.0.0:3025
   proxy_listener_mode: multiplex
-  cluster_name: cluster-${TELEPORT_EXTERNAL_ADDR}
+  cluster_name: TOREPLACE
 ssh_service:
   enabled: no
 proxy_service:
   enabled: yes
   web_listen_addr: 0.0.0.0:3080
-  public_addr: ${TELEPORT_EXTERNAL_ADDR}
+  public_addr: TOREPLACE:443
   https_keypairs: []
   acme: {}
+app_service:
+  enabled: yes
+  apps:
+    - name: whoami
+      uri: http://whoami
+    - name: traefik
+      uri: http://traefik:8080/dashboard/#/
+    - name: dozzle
+      uri: http://dozzle:8080/

@@ -3,7 +3,7 @@ services:
     image: public.ecr.aws/gravitational/teleport-distroless-debug:16.4.7
     container_name: teleport
     volumes:
-      - ./config:/etc/teleport
+      - ${DEPLOY_DIRECTORY}/servicesconfiguration/teleport:/etc/teleport
       - ${APP_DATA_DIRECTORY}/teleport:/var/lib/teleport
     environment:
       - TELEPORT_EXTERNAL_ADDR=${TELEPORT_EXTERNAL_ADDR}
@@ -13,7 +13,7 @@ services:
       - "traefik.http.services.teleport.loadbalancer.server.port=3080"
       - "traefik.http.services.teleport.loadbalancer.server.scheme=https"
       - "traefik.http.routers.teleport-https.entrypoints=websecure"
-      - "traefik.http.routers.teleport-https.rule=Host(`${TELEPORT_EXTERNAL_ADDR}`) || HostRegexp(`{subhost:[a-z]+}.${TELEPORT_EXTERNAL_ADDR}`)"
+      - "traefik.http.routers.teleport-https.rule=Host(`${TELEPORT_EXTERNAL_ADDR}`) || HostRegexp(`[a-z]+.${TELEPORT_EXTERNAL_ADDR}`)"
       - "traefik.http.routers.teleport-https.tls=true"
       - "traefik.http.routers.teleport-https.tls.certresolver=${CERTIFICATE_RESOLVER_NAME}"
       - "traefik.http.routers.teleport-https.tls.domains[0].main=${TELEPORT_EXTERNAL_ADDR}"
@@ -21,3 +21,4 @@ services:
     networks:
       - media_center_network
     restart: unless-stopped
+    command: --insecure # until certificat setup completed

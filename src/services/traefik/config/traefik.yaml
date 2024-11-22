@@ -3,7 +3,7 @@ global:
   sendAnonymousUsage: false
 
 accesslog:
-  addInternals: true
+  addInternals: false
 
 api:
   dashboard: true

@@ -1,5 +1,6 @@
 appdata/
-src/.secrets/
-!src/.secrets/README.md
-src/*.env
-!src/example.env
+deploy/.secrets/
+!deploy/.secrets/README.md
+deploy/*.env
+!deploy/example.env
+deploy/servicesconfiguration/teleport/teleport.yaml

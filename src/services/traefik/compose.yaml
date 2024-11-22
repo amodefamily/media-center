@@ -5,13 +5,13 @@ services:
     restart: unless-stopped
     ports:
       - 443:443
-      - 8080:8080
     volumes:
       - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
-      - ./config/additionalservices/:/etc/traefik/additionalservices:ro
+      - ${DEPLOY_DIRECTORY}/servicesconfiguration/traefic/:/etc/traefik/additionalservices:ro
       - $APP_DATA_DIRECTORY/traefik/volumes/certs/:/var/traefik/certs/:rw
       - $APP_DATA_DIRECTORY/traefik/log/:/var/log/traefik/:rw
     environment:
+      - TZ=${TIMEZONE}
       - CF_DNS_API_TOKEN_FILE=/run/secrets/cloudflare_token
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CERTIFICATE_RESOLVER_NAME=${CERTIFICATE_RESOLVER_NAME}
@@ -25,4 +25,4 @@ services:
 
 secrets:
   cloudflare_token:
-    file: ../../.secrets/CF_DNS_API_TOKEN
+    file: ${DEPLOY_DIRECTORY}/.secrets/CF_DNS_API_TOKEN
