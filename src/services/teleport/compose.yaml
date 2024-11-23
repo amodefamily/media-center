@@ -3,7 +3,7 @@ services:
     image: public.ecr.aws/gravitational/teleport-distroless-debug:16.4.7
     container_name: teleport
     volumes:
-      - ${DEPLOY_DIRECTORY}/servicesconfiguration/teleport:/etc/teleport
+      - ${SERVICE_CONFIGURATIONS_DIRECTORY}/teleport:/etc/teleport
       - ${APP_DATA_DIRECTORY}/teleport:/var/lib/teleport
     environment:
       - TELEPORT_EXTERNAL_ADDR=${TELEPORT_EXTERNAL_ADDR}

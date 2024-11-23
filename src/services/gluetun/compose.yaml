@@ -26,7 +26,7 @@ services:
       - 8388:8388/udp # Gluetun Local Network Shadowsocks
       - 8000:8000/tcp # Build-in HTTP control header
     volumes:
-      - ${DEPLOY_DIRECTORY}/servicesconfiguration/gluetun:/gluetun
+      - ${SERVICE_CONFIGURATIONS_DIRECTORY}/gluetun:/gluetun
       - ${APP_DATA_DIRECTORY}/gluetun:/config
     environment:
       - PUID=${COMPOSE_USER_ID}

@@ -7,7 +7,7 @@ services:
       - 443:443
     volumes:
       - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
-      - ${DEPLOY_DIRECTORY}/servicesconfiguration/traefic/:/etc/traefik/additionalservices:ro
+      - ${SERVICE_CONFIGURATIONS_DIRECTORY}/traefic/:/etc/traefik/additionalservices:ro
       - $APP_DATA_DIRECTORY/traefik/volumes/certs/:/var/traefik/certs/:rw
       - $APP_DATA_DIRECTORY/traefik/log/:/var/log/traefik/:rw
     environment:
@@ -25,4 +25,4 @@ services:
 
 secrets:
   cloudflare_token:
-    file: ${DEPLOY_DIRECTORY}/.secrets/CF_DNS_API_TOKEN
+    file: ${SECRETS_DIRECTORY}/CF_DNS_API_TOKEN
