@@ -24,18 +24,29 @@ services:
       - 8888:8888/tcp # Gluetun Local Network HTTP proxy
       - 8388:8388/tcp # Gluetun Local Network Shadowsocks
       - 8388:8388/udp # Gluetun Local Network Shadowsocks
-      - 8000:8000/tcp # Build-in HTTP control header
     volumes:
       - ${SERVICE_CONFIGURATIONS_DIRECTORY}/gluetun:/gluetun
       - ${APP_DATA_DIRECTORY}/gluetun:/config
     environment:
+      - HTTPPROXY=${GLUETUN_HTTPPROXY}
+      - HTTPPROXY_LOG=${GLUETUN_HTTPPROXY_LOG}
+      - HTTPPROXY_STEALTH=${GLUETUN_HTTPPROXY_STEALTH}
+      - SHADOWSOCKS=${GLUETUN_SHADOWSOCKS}
+      - SHADOWSOCKS_LOG=${GLUETUN_SHADOWSOCKS_LOG}
+      - SHADOWSOCKS_PASSWORD=${GLUETUN_SHADOWSOCKS_PASSWORD}
+      - SHADOWSOCKS_CIPHER=${GLUETUN_SHADOWSOCKS_CIPHER}
       - PUID=${COMPOSE_USER_ID}
       - PGID=${COMPOSE_GROUP_ID}
       - TZ=${TIMEZONE}
-      - VPN_SERVICE_PROVIDER=${VPN_SERVICE}
-      - VPN_TYPE=openvpn
-      - OPENVPN_USER=${VPN_USER}
-      - OPENVPN_PASSWORD=${VPN_PASSWORD}
+      - VPN_SERVICE_PROVIDER=${GLUETUN_VPN_SERVICE}
+      - VPN_TYPE=${GLUETUN_VPN_TYPE}
+      - OPENVPN_USER=${GLUETUN_OPENVPN_USER}
+      - OPENVPN_PASSWORD=${GLUETUN_OPENVPN_PASSWORD}
+      - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
+      - SERVER_REGIONS=${GLUETUN_SERVER_REGIONS}
+      - SERVER_CITIES=${GLUETUN_SERVER_CITIES}
+      - SERVER_HOSTNAMES=${GLUETUN_SERVER_HOSTNAMES}
+      - SERVER_CATEGORIES=${GLUETUN_SERVER_CATEGORIES}
     # The container has no recovery logic. Use a healthcheck to catch disconnects.
     healthcheck:
       test: ping -c 1 www.google.com || exit 1
@@ -44,3 +55,13 @@ services:
       retries: 5
     labels:
       - com.centurylinklabs.watchtower.enable=false
+      - "traefik.enable=true"
+      - "traefik.http.services.qbittorrent.loadbalancer.serversTransport=insecureSkipVerifyEnabledServersTransport@file"
+      - "traefik.http.services.qbittorrent.loadbalancer.server.port=${QBITTORRENT_WEBUI_PORT}"
+      - "traefik.http.services.qbittorrent.loadbalancer.server.scheme=http"
+      - "traefik.http.routers.qbittorrent.entrypoints=websecure"
+      - "traefik.http.routers.qbittorrent.rule=Host(`${QBITTORRENT_EXTERNAL_ADDR}`)"
+      - "traefik.http.routers.qbittorrent.tls=true"
+      - "traefik.http.routers.qbittorrent.tls.certresolver=${CERTIFICATE_RESOLVER_NAME}"
+      - "traefik.http.routers.qbittorrent.tls.domains[0].main=${QBITTORRENT_EXTERNAL_ADDR}"
+      - "traefik.http.routers.qbittorrent.tls.domains[0].sans=*.${QBITTORRENT_EXTERNAL_ADDR}"
