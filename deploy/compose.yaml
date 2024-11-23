@@ -49,3 +49,6 @@ include:
   - path:
     - ../src/services/teleport/compose.yaml
     env_file: ${GLOBAL_ENV_FILE_PATH}
+  - path:
+    - ../src/services/gluetun/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}

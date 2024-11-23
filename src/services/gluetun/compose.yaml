@@ -1,0 +1,46 @@
+services:
+  ###########################################################################
+  ###########################################################################
+  ##
+  ##  Docker Compose File: Gluetun (qmcgaw)
+  ##  Function: VPN Client
+  ##
+  ##  Documentation: https://github.com/qdm12/gluetun/wiki
+  ##
+  ###########################################################################
+  ###########################################################################
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    networks:
+      - media_center_network
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8888:8888/tcp # Gluetun Local Network HTTP proxy
+      - 8388:8388/tcp # Gluetun Local Network Shadowsocks
+      - 8388:8388/udp # Gluetun Local Network Shadowsocks
+      - 8000:8000/tcp # Build-in HTTP control header
+    volumes:
+      - ${DEPLOY_DIRECTORY}/servicesconfiguration/gluetun:/gluetun
+      - ${APP_DATA_DIRECTORY}/gluetun:/config
+    environment:
+      - PUID=${COMPOSE_USER_ID}
+      - PGID=${COMPOSE_GROUP_ID}
+      - TZ=${TIMEZONE}
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE}
+      - VPN_TYPE=openvpn
+      - OPENVPN_USER=${VPN_USER}
+      - OPENVPN_PASSWORD=${VPN_PASSWORD}
+    # The container has no recovery logic. Use a healthcheck to catch disconnects.
+    healthcheck:
+      test: ping -c 1 www.google.com || exit 1
+      interval: 60s
+      timeout: 20s
+      retries: 5
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
