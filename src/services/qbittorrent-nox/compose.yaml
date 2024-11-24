@@ -1,19 +1,15 @@
 services:
   qbittorrent-nox:
-    # for debugging
-    #cap_add:
-      #- SYS_PTRACE
     container_name: qbittorrent-nox
     network_mode: "container:gluetun"
     environment:
-      #- PAGID=10000
+      - PAGID=${QBITTORRENT_PAGID}
       - PGID=${COMPOSE_GROUP_ID}
       - PUID=${COMPOSE_USER_ID}
       - QBT_LEGAL_NOTICE=confirm
       - QBT_VERSION=latest
       - QBT_WEBUI_PORT=${QBITTORRENT_WEBUI_PORT}
       - TZ=${TIMEZONE}
-      #- UMASK=022
     image: qbittorrentofficial/qbittorrent-nox:latest
     read_only: true
     stop_grace_period: 30m
