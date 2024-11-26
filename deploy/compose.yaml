@@ -61,3 +61,6 @@ include:
   - path:
     - ${SERVICE_DEFINITIONS_DIRECTORY}/arr_services/flaresolverr/compose.yaml
     env_file: ${GLOBAL_ENV_FILE_PATH}
+  - path:
+    - ${SERVICE_DEFINITIONS_DIRECTORY}/arr_services/radarr/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}
