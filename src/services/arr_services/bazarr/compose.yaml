@@ -1,0 +1,22 @@
+services:
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    restart: unless-stopped
+    networks:
+      - media_center_network
+    environment:
+      - PUID=${COMPOSE_USER_ID}
+      - PGID=${COMPOSE_GROUP_ID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${APP_DATA_DIRECTORY}/bazarr:/config
+      - ${DATA_DIRECTORY}:/data
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.bazarr.rule=Host(`${BAZARR_EXTERNAL_ADDR}`)"
+      - "traefik.http.routers.bazarr.entrypoints=websecure"
+      - "traefik.http.routers.bazarr.tls=true"
+      - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+      - "traefik.http.routers.bazarr.tls.certresolver=${CERTIFICATE_RESOLVER_NAME}"
