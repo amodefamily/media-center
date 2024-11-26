@@ -1,5 +1,6 @@
 services:
   lidarr:
+    container_name: lidarr
     image: lscr.io/linuxserver/lidarr:latest
     restart: unless-stopped
     networks:

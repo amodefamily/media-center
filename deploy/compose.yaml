@@ -79,3 +79,6 @@ include:
   - path:
     - ${SERVICE_DEFINITIONS_DIRECTORY}/arr_services/sonarr/compose.yaml
     env_file: ${GLOBAL_ENV_FILE_PATH}
+  - path:
+    - ${SERVICE_DEFINITIONS_DIRECTORY}/arr_services/jellyseerr/compose.yaml
+    env_file: ${GLOBAL_ENV_FILE_PATH}

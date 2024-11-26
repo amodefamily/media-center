@@ -1,5 +1,6 @@
 services:
   sonarr:
+    container_name: sonarr
     image: lscr.io/linuxserver/sonarr:latest
     restart: unless-stopped
     networks:

@@ -1,6 +1,7 @@
 services:
   readarr:
-    image: lscr.io/linuxserver/readarr:latest
+    container_name: readarr
+    image: lscr.io/linuxserver/readarr:develop
     restart: unless-stopped
     networks:
       - media_center_network

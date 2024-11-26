@@ -1,0 +1,21 @@
+
+services:
+  jellyseerr:
+    container_name: jellyseerr
+    image: fallenbagel/jellyseerr:latest
+    restart: unless-stopped
+    networks:
+      - media_center_network
+    environment:
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${APP_DATA_DIRECTORY}/jellyseerr:/app/config
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyseerr.rule=Host(`${JELLYSEERR_EXTERNAL_ADDR}`)"
+      - "traefik.http.routers.jellyseerr.entrypoints=websecure"
+      - "traefik.http.routers.jellyseerr.tls=true"
+      - "traefik.http.services.jellyseerr.loadbalancer.server.port=8787"
+      - "traefik.http.routers.jellyseerr.tls.certresolver=${CERTIFICATE_RESOLVER_NAME}"
+
