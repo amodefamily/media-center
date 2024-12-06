@@ -10,8 +10,8 @@ services:
     # Network mode of 'host' exposes the ports on the host. This is needed for DLNA access.
     network_mode: 'host'
     volumes:
-      - ${SERVICE_CONFIGURATIONS_DIRECTORY}/jellyfin:/config
-      - ${APP_DATA_DIRECTORY}/jellyfin:/cache
+      - ${APP_DATA_DIRECTORY}/jellyfin:/config
+      - ${JELLYFIN_CACHE_DIRECTORY}:/cache
       # Update this configuration as desired
       - ${DATA_DIRECTORY}/media:/media
     restart: unless-stopped

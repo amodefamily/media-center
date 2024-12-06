@@ -17,7 +17,7 @@ services:
       - /tmp
     tty: true
     volumes:
-      - ${SERVICE_CONFIGURATIONS_DIRECTORY}/qbittorrent-nox:/config
+      - ${APP_DATA_DIRECTORY}/qbittorrent-nox:/config
       - ${DATA_DIRECTORY}/torrents:/data/torrents
     restart: unless-stopped
     depends_on:
